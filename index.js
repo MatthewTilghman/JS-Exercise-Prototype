@@ -39,8 +39,21 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+}
+Person.prototype.eat = function(someFood){
+  if (this.stomach.length < 10) {
+    this.stomach.push(someFood);
+  }
+};
+Person.prototype.poop = function(){
+  this.stomach = [];
+};
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`;
 }
 
 /*
@@ -57,10 +70,33 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
 }
-
+Car.prototype.fill = function(gas){
+  this.tank += gas;
+}
+// Car.prototype.drive = function(distance){
+//   this.tank = distance*this.milesPerGallon;  //TODO 4020 output
+//   this.odometer+=distance;
+//   if(this.tank<=0){
+//     this.odometer=this.milesPerGallon*this.tank;
+//     return `I ran out of fuel at ${this.odometer} miles!"`
+//   }
+  
+// }
+Car.prototype.drive = function(distance){
+  this.tank -= distance/this.milesPerGallon;
+  this.odometer+=distance;
+  if(this.tank <=0){
+    this.odometer += this.milesPerGallon*this.tank;
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }
+}
 /*
   TASK 3
     - Write a Baby constructor subclassing Person.
@@ -68,18 +104,24 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
-
+function Baby(name, age, favoriteToy) {
+  this.name = name;
+  this.age = age;
+  this.favoriteToy= favoriteToy;
+}
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function(){
+  return `Playing with ${this.favoriteToy}`;
 }
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Explicit binding tell a function what obj to use (call, apply, and bind)
+  2. Implicit binding obj that is standing before (to the left)the dot is what "this" keyword is bound to
+  3. New binding
+  4. Defaul binding or globalscope
 */
 
 
